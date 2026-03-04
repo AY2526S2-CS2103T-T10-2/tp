@@ -357,6 +357,67 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     * 1b1. User refines search.
     * Use case resumes at step 1.
 
+**Use case: Mid-Semester Room Swap**
+
+**MSS**
+
+1. User requests to find the two residents involved in the swap.
+2. System shows the current records for both residents.
+3. User requests to update Resident A to a temporary placeholder room.
+4. User requests to update Resident B to Resident A’s original room.
+5. User requests to update Resident A to Resident B’s original room.
+6. System confirms all updates are successful.
+
+   Use case ends.
+
+**Extensions**
+
+* 3a. The user attempts to move a resident into an occupied room without using a placeholder.
+    * 3a1. System shows a duplicate room error.
+    * Use case resumes at step 3.
+
+**Use case: Bulk Removal of Graduating Residents**
+
+**MSS**
+
+1. User requests to list all residents.
+2. System shows the full list.
+3. User requests to delete multiple residents by providing a list of indices.
+4. System asks for confirmation for the bulk deletion.
+5. User confirms the deletion.
+6. System removes all specified records.
+
+   Use case ends.
+
+**Extensions**
+
+* 3a. One or more provided indices are out of range.
+    * 3a1. System shows an error message identifying the invalid index.
+    * Use case resumes at step 2.
+* 5a. User cancels the confirmation.
+    * 5a1. System aborts the deletion; data remains unchanged.
+    * Use case ends.
+
+**Use case: Managing Medical/Special Needs**
+
+**MSS**
+
+1. User requests to find residents with a specific tag (e.g., "asthma").
+2. System shows a list of residents matching the tag.
+3. User requests to view the full details of a specific resident.
+4. User requests to append a specific dietary note to that resident’s record.
+5. System preserves the history and appends the new note.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. No residents are found with that tag.
+    * 1a1. System shows an empty list or "No residents found."
+    * Use case ends.
+* 4a. The user provides an invalid index for the update.
+    * 4a1. System shows an error message.
+    * Use case resumes at step 2.
 
 ### Non-Functional Requirements
 
