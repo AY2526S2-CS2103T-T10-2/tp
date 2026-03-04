@@ -1,6 +1,8 @@
+
 # RACE – Resident Administration & Contact Explorer
 
----
+[![Java CI](https://github.com/AY2526S2-CS2103T-T10-2/tp/actions/workflows/gradle.yml/badge.svg)](https://github.com/AY2526S2-CS2103T-T10-2/tp/actions)
+[![codecov](https://codecov.io/gh/AY2526S2-CS2103T-T10-2/tp/graph/badge.svg?token=JHPIIC76MU)](https://codecov.io/gh/AY2526S2-CS2103T-T10-2/tp)
 
 ## Overview
 
