@@ -320,8 +320,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-
-*{More to be added}*
+4. Should respond to most user commands within 2 seconds for typical usage involving up to 40 resident records.
+5. Should store all resident information locally on the user’s device and should not require an internet connection to perform any core features.
+6. Should provide clear and informative error messages when the user enters an invalid command or incorrect parameters.
+7. Should preserve all stored resident data between application restarts, unless the user explicitly deletes the data.
+8. Should allow users to recover the application state from saved data files without manual editing of the data files.
+9. Should keep command output readable within a standard terminal window width (e.g., ~120 characters).
 
 ### Glossary
 
