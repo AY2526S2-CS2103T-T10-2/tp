@@ -100,8 +100,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .add("persons", persons)
-                .toString();
+            .add("persons", persons)
+            .toString();
     }
 
     @Override
