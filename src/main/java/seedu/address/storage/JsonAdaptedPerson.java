@@ -14,8 +14,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Room;
 import seedu.address.model.person.Remark;
+import seedu.address.model.person.Room;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -69,7 +69,7 @@ class JsonAdaptedPerson {
      * {@code Person} object.
      *
      * @throws IllegalValueException if there were any data constraints violated in
-     *                               the adapted person.
+     *     the adapted person.
      */
     public Person toModelType() throws IllegalValueException {
         final List<Tag> personTags = new ArrayList<>();
