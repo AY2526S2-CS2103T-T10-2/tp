@@ -21,36 +21,36 @@ public class RoomTest {
 
     @Test
     public void isValidRoom() {
-        // null address
+        // null room
         assertThrows(NullPointerException.class, () -> Room.isValidRoom(null));
 
-        // invalid addresses
+        // invalid rooms
         assertFalse(Room.isValidRoom("")); // empty string
         assertFalse(Room.isValidRoom(" ")); // spaces only
 
-        // valid addresses
+        // valid rooms
         assertTrue(Room.isValidRoom("Blk 456, Den Road, #01-355"));
         assertTrue(Room.isValidRoom("-")); // one character
-        assertTrue(Room.isValidRoom("Leng Inc; 1234 Market St; San Francisco CA 2349879; USA")); // long address
+        assertTrue(Room.isValidRoom("Leng Inc; 1234 Market St; San Francisco CA 2349879; USA")); // long room
     }
 
     @Test
     public void equals() {
-        Room address = new Room("Valid Room");
+        Room room = new Room("Valid Room");
 
         // same values -> returns true
-        assertTrue(address.equals(new Room("Valid Room")));
+        assertTrue(room.equals(new Room("Valid Room")));
 
         // same object -> returns true
-        assertTrue(address.equals(address));
+        assertTrue(room.equals(room));
 
         // null -> returns false
-        assertFalse(address.equals(null));
+        assertFalse(room.equals(null));
 
         // different types -> returns false
-        assertFalse(address.equals(5.0f));
+        assertFalse(room.equals(5.0f));
 
         // different values -> returns false
-        assertFalse(address.equals(new Room("Other Valid Room")));
+        assertFalse(room.equals(new Room("Other Valid Room")));
     }
 }
