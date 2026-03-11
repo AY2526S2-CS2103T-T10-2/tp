@@ -28,7 +28,7 @@ public class ParserUtil {
      * and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the specified index is invalid (not non-zero
-     *         unsigned integer).
+     *     unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
         String trimmedIndex = oneBasedIndex.trim();
