@@ -23,7 +23,7 @@ public class PersonCard extends UiPart<Region> {
      * or an exception will be thrown by JavaFX during runtime.
      *
      * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The
-     *     issue on AddressBook level 4</a>
+     *         issue on AddressBook level 4</a>
      */
 
     public final Person person;
@@ -59,7 +59,7 @@ public class PersonCard extends UiPart<Region> {
         email.setText(person.getEmail().value);
         remark.setText(person.getRemark().value);
         person.getTags().stream()
-            .sorted(Comparator.comparing(tag -> tag.tagName))
-            .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
+                .sorted(Comparator.comparing(tag -> tag.tagName))
+                .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 }
