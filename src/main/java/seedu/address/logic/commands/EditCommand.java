@@ -25,7 +25,6 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Remark;
 import seedu.address.model.person.Room;
 import seedu.address.model.tag.Tag;
 
@@ -78,13 +77,10 @@ public class EditCommand extends Command {
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        Room updatedAddress = editPersonDescriptor.getRoom().orElse(personToEdit.getRoom());
+        Room updatedRoom = editPersonDescriptor.getRoom().orElse(personToEdit.getRoom());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        // edit command does not support editing of remark
-        Remark updatedRemark = personToEdit.getRemark();
-
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedRemark, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedRoom, updatedTags);
     }
 
     @Override
@@ -188,6 +184,7 @@ public class EditCommand extends Command {
 
         public void setEmail(Email email) {
             this.email = email;
+        }
 
         public Optional<Room> getRoom() {
             return Optional.ofNullable(room);
