@@ -4,7 +4,7 @@
       "name": "Alice Pauline",
       "phone": "94351253",
       "email": "alice@example.com",
-      "room": "#14-203-D",
+      "room": "123, Jurong West Ave 6, #08-111",
       "tags": [
         "friends"
       ]
@@ -13,7 +13,7 @@
       "name": "Alice Pauline",
       "phone": "94351253",
       "email": "pauline@example.com",
-      "room": "#14-203-D"
+      "room": "4th street"
     }
   ]
 }
