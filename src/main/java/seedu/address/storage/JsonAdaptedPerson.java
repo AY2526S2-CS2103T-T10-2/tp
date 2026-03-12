@@ -60,8 +60,8 @@ class JsonAdaptedPerson {
         room = source.getRoom().value;
         remark = source.getRemark().value;
         tags.addAll(source.getTags().stream()
-            .map(JsonAdaptedTag::new)
-            .collect(Collectors.toList()));
+                .map(JsonAdaptedTag::new)
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -69,7 +69,7 @@ class JsonAdaptedPerson {
      * {@code Person} object.
      *
      * @throws IllegalValueException if there were any data constraints violated in
-     *     the adapted person.
+     *         the adapted person.
      */
     public Person toModelType() throws IllegalValueException {
         final List<Tag> personTags = new ArrayList<>();
