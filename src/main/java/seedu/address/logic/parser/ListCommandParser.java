@@ -18,10 +18,37 @@ public class ListCommandParser implements Parser<ListCommand> {
      */
     public ListCommand parse(String args) throws ParseException {
         String trimmedArgs = args.trim();
-        if (!trimmedArgs.isEmpty()) {
+        if (trimmedArgs.isEmpty()) {
+            return new ListCommand();
+        }
+
+        // We use a simple check here because ArgumentTokenizer requires a leading whitespace before the prefix.
+        // For 'list s/name', args starts with ' s/name' (there's a leading space from AddressBookParser).
+        if (!args.contains(" s/")) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
-        return new ListCommand();
+
+        String field = args.substring(args.indexOf(" s/") + 3).trim();
+        if (field.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        }
+
+        // Preamble check: everything before " s/" should be empty/whitespace
+        String preamble = args.substring(0, args.indexOf(" s/")).trim();
+        if (!preamble.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        }
+
+        switch (field.toLowerCase()) {
+        case "name":
+            return new ListCommand("name", (p1, p2) -> p1.getName().fullName.compareToIgnoreCase(p2.getName().fullName));
+        case "room":
+            return new ListCommand("room", (p1, p2) -> p1.getRoom().value.compareToIgnoreCase(p2.getRoom().value));
+        default:
+            throw new ParseException("Invalid sort field! Supported fields: name, room");
+        }
     }
 }
