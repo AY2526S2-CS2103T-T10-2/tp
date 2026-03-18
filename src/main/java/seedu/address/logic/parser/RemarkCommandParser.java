@@ -18,18 +18,21 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
     @Override
     public RemarkCommand parse(String userInput) throws ParseException {
         requireNonNull(userInput);
-
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(userInput, PREFIX_REMARK);
+
+        String invalidCommandFormatMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE);
 
         Index index;
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (IllegalValueException ive) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    RemarkCommand.MESSAGE_USAGE), ive);
+        } catch (ParseException pe) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemarkCommand.MESSAGE_USAGE), pe);
         }
 
-        Remark remark = new Remark(argMultimap.getValue(PREFIX_REMARK).orElse(""));
+        // When the remark command is used, the user must provide a r/ arg
+        String remarkText = argMultimap.getValue(PREFIX_REMARK)
+                .orElseThrow(() -> new ParseException(invalidCommandFormatMessage));
+        Remark remark = new Remark(remarkText);
 
         return new RemarkCommand(index, remark);
     }
