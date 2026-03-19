@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.util.Comparator;
@@ -41,6 +42,7 @@ public class ListCommand extends Command {
      * @param comparator The comparator used for sorting.
      */
     public ListCommand(String field, Comparator<Person> comparator) {
+        requireAllNonNull(field, comparator);
         this.field = field;
         this.comparator = comparator;
     }
@@ -70,6 +72,7 @@ public class ListCommand extends Command {
         ListCommand otherListCommand = (ListCommand) other;
         boolean fieldEquals = (field == null && otherListCommand.field == null)
                 || (field != null && field.equals(otherListCommand.field));
+
         return fieldEquals;
     }
 

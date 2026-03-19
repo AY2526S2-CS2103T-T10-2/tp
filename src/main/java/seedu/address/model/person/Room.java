@@ -66,14 +66,14 @@ public class Room implements Comparable<Room> {
 
     @Override
     public int compareTo(Room other) {
-        // Format: #BLOCK-ROOM-LETTER
+        // Format: #FLOOR-UNIT[-LETTER] (letter is optional)
         String[] parts1 = this.value.substring(1).split("-");
         String[] parts2 = other.value.substring(1).split("-");
 
-        int block1 = Integer.parseInt(parts1[0]);
-        int block2 = Integer.parseInt(parts2[0]);
-        if (block1 != block2) {
-            return block1 - block2;
+        int floor1 = Integer.parseInt(parts1[0]);
+        int floor2 = Integer.parseInt(parts2[0]);
+        if (floor1 != floor2) {
+            return floor1 - floor2;
         }
 
         int unit1 = Integer.parseInt(parts1[1]);
@@ -82,7 +82,10 @@ public class Room implements Comparable<Room> {
             return unit1 - unit2;
         }
 
-        return parts1[2].compareTo(parts2[2]);
+        // Handle optional letter part
+        String letter1 = parts1.length > 2 ? parts1[2] : "";
+        String letter2 = parts2.length > 2 ? parts2[2] : "";
+        return letter1.compareTo(letter2);
     }
 
 }

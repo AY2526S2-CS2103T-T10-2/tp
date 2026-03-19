@@ -4,11 +4,16 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
+import java.util.Comparator;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.model.person.Person;
 
 public class ListCommandParserTest {
+
+    private static final Comparator<Person> DUMMY_COMPARATOR = (p1, p2) -> 0;
 
     private ListCommandParser parser = new ListCommandParser();
 
@@ -16,10 +21,11 @@ public class ListCommandParserTest {
     public void parse_validArgs_returnsListCommand() {
         assertParseSuccess(parser, "", new ListCommand());
         assertParseSuccess(parser, "   ", new ListCommand());
-        assertParseSuccess(parser, " s/name", new ListCommand("name", null)); // Comparator is ignored in equals
-        assertParseSuccess(parser, " s/room", new ListCommand("room", null));
-        assertParseSuccess(parser, " s/phone", new ListCommand("phone", null));
-        assertParseSuccess(parser, " s/email", new ListCommand("email", null));
+        // equals() only compares field name, so a dummy comparator suffices
+        assertParseSuccess(parser, " s/name", new ListCommand("name", DUMMY_COMPARATOR));
+        assertParseSuccess(parser, " s/room", new ListCommand("room", DUMMY_COMPARATOR));
+        assertParseSuccess(parser, " s/phone", new ListCommand("phone", DUMMY_COMPARATOR));
+        assertParseSuccess(parser, " s/email", new ListCommand("email", DUMMY_COMPARATOR));
     }
 
     @Test

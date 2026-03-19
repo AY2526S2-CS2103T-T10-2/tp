@@ -1,12 +1,14 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SORT;
 
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
- * Parses input arguments and creates a new ListCommand object
+ * Parses input arguments and creates a new ListCommand object.
  */
 public class ListCommandParser implements Parser<ListCommand> {
 
@@ -17,27 +19,25 @@ public class ListCommandParser implements Parser<ListCommand> {
      * @throws ParseException if the user input does not conform the expected format
      */
     public ListCommand parse(String args) throws ParseException {
-        String trimmedArgs = args.trim();
-        if (trimmedArgs.isEmpty()) {
+        requireNonNull(args);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_SORT);
+
+        // Reject any preamble text (e.g. "list abc s/name" should fail)
+        if (!argMultimap.getPreamble().isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        }
+
+        // If no sort prefix is provided, return a plain list command
+        if (argMultimap.getValue(PREFIX_SORT).isEmpty()) {
             return new ListCommand();
         }
 
-        // We use a simple check here because ArgumentTokenizer requires a leading whitespace before the prefix.
-        // For 'list s/name', args starts with ' s/name' (there's a leading space from AddressBookParser).
-        if (!args.contains(" s/")) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
-        }
+        // Ensure no duplicate sort prefixes (e.g. "list s/name s/room" should fail)
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_SORT);
 
-        String field = args.substring(args.indexOf(" s/") + 3).trim();
+        String field = argMultimap.getValue(PREFIX_SORT).get().trim();
         if (field.isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
-        }
-
-        // Preamble check: everything before " s/" should be empty/whitespace
-        String preamble = args.substring(0, args.indexOf(" s/")).trim();
-        if (!preamble.isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
@@ -51,7 +51,8 @@ public class ListCommandParser implements Parser<ListCommand> {
         case "phone":
             return new ListCommand("phone", (p1, p2) -> p1.getPhone().value.compareTo(p2.getPhone().value));
         case "email":
-            return new ListCommand("email", (p1, p2) -> p1.getEmail().value.compareToIgnoreCase(p2.getEmail().value));
+            return new ListCommand("email", (p1, p2) -> p1.getEmail().value
+                    .compareToIgnoreCase(p2.getEmail().value));
         default:
             throw new ParseException("Invalid sort field! Supported fields: name, room, phone, email");
         }
