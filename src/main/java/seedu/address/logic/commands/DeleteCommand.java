@@ -59,7 +59,8 @@ public class DeleteCommand extends Command {
         }
 
         if (personsToDelete.size() == 1) {
-            return new CommandResult(String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personsToDelete.get(0))));
+            return new CommandResult(
+                    String.format(MESSAGE_DELETE_PERSON_SUCCESS, Messages.format(personsToDelete.get(0))));
         }
 
         String deletedPersonsMessage = personsToDelete.stream()
