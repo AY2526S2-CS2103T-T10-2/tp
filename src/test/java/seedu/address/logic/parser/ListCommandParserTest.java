@@ -46,8 +46,8 @@ public class ListCommandParserTest {
         // equals() only compares field name, so a dummy comparator suffices
         assertParseSuccess(parser, " -sort n/", new ListCommand("name", DUMMY_COMPARATOR));
         assertParseSuccess(parser, " -sort r/", new ListCommand("room", DUMMY_COMPARATOR));
-        assertParseSuccess(parser, " -sort p/", new ListCommand("phone", DUMMY_COMPARATOR));
-        assertParseSuccess(parser, " -sort e/", new ListCommand("email", DUMMY_COMPARATOR));
+        assertParseSuccess(parser, "  -sort  p/  ", new ListCommand("phone", DUMMY_COMPARATOR));
+        assertParseSuccess(parser, "-sort e/", new ListCommand("email", DUMMY_COMPARATOR));
         assertParseSuccess(parser, " -SoRt r/", new ListCommand("room", DUMMY_COMPARATOR));
     }
 
@@ -81,5 +81,13 @@ public class ListCommandParserTest {
         assertEquals(
                 Arrays.asList(ALICE, GEORGE, DANIEL, HANNAH, CARL, BENSON, FIONA, ELLE),
                 model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_allSortPrefixes_runComparators() throws Exception {
+        parser.parse("-sort n/").execute(model);
+        parser.parse("-sort r/").execute(model);
+        parser.parse("-sort p/").execute(model);
+        parser.parse("-sort e/").execute(model);
     }
 }

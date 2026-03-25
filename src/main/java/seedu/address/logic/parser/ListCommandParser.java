@@ -13,10 +13,12 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * Parses input arguments and creates a new ListCommand object.
  */
 public class ListCommandParser implements Parser<ListCommand> {
-    private static final Pattern SORT_ARGUMENT_PATTERN =
-            Pattern.compile("\\s*-sort\\s+(?<field>\\S+)\\s*", Pattern.CASE_INSENSITIVE);
+
     private static final String MESSAGE_INVALID_SORT_FIELD =
             "Invalid sort field! Supported field prefixes: n/, r/, p/, e/";
+
+    private static final Pattern SORT_ARGUMENT_PATTERN =
+            Pattern.compile("\\s*-sort\\s+(?<field>\\S+)\\s*", Pattern.CASE_INSENSITIVE);
 
     /**
      * Parses the given {@code String} of arguments in the context of the ListCommand
@@ -31,7 +33,7 @@ public class ListCommandParser implements Parser<ListCommand> {
             return new ListCommand();
         }
 
-        Matcher matcher = SORT_ARGUMENT_PATTERN.matcher(args);
+        Matcher matcher = SORT_ARGUMENT_PATTERN.matcher(trimmedArgs);
         if (!matcher.matches()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
