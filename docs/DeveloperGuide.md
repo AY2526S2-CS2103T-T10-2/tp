@@ -9,7 +9,7 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+* The `remark` feature implementation is adapted from the se-edu tutorial [Adding a Remark Command to AB3](https://se-education.org/guides/tutorials/ab3AddRemark.html).
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -82,6 +82,7 @@ The `UI` component,
 * listens for changes to `Model` data so that the UI can be updated with the modified data.
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
+* renders a resident's remark in `PersonCard` only when the remark is non-empty, so empty remarks do not take up space in the list view.
 
 ### Logic component
 
@@ -122,9 +123,8 @@ How the parsing works:
 
 The `Model` component,
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
-* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list, which is in turn wrapped by a `SortedList` to support sorting.
-* exposes the final processed list to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
+* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object). Each `Person` stores immutable values for `Name`, `Phone`, `Email`, `Room`, `Remark`, and tags.
+* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
 * does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
@@ -143,6 +143,7 @@ The `Model` component,
 
 The `Storage` component,
 * can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
+* persists each person's remark in the JSON data file and loads missing `remark` fields as empty remarks to preserve compatibility with older saved data.
 * inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
@@ -288,13 +289,14 @@ Felix is a Year 3 Soc student and RA at Acacia College. Approachable and proacti
 
 ### User stories
 
-The primary user of RACE is a Resident Assistant (RA) who needs to manage resident information efficiently during onboarding and throughout the semester. As a beginner RA, the user should be able to add a new resident record with a name and room number so that residents can be registered quickly during onboarding. The user should also be able to add a resident using a single command with multiple fields, allowing onboarding to be performed rapidly even when many residents need to be entered at once. In addition, the user should be able to view a list of all registered residents so that they can easily see everyone under their care.
-
-To support quick retrieval of information, the user should be able to search for residents using partial information, allowing them to locate a resident even when they do not remember the exact details. The user should also be able to sort residents alphabetically or sort residents by room number, making it easier to browse through the resident list and perform block checks.
-
-To ensure records remain accurate over time, the RA should be able to update resident details whenever information changes. The user should also be able to remove resident records that are no longer needed, ensuring the system remains organised and uncluttered.
-
-Finally, the system should support basic usability and flexibility. A new RA should be able to understand what the system is meant to help them do, such as through clear guidance or documentation, so that they can quickly learn how the system supports their role. Additionally, the RA should be able to add a resident even if some optional fields are missing, ensuring that incomplete information does not prevent onboarding during busy periods.
+* As a new RA, I can add a resident with the required details, so that I can register residents quickly during onboarding.
+* As an RA handling a busy intake, I can include optional fields in the same `add` command, so that incomplete information does not block onboarding.
+* As an RA, I can list all residents, so that I can review the current roster at a glance.
+* As a forgetful RA, I can find residents by name keyword or exact room, so that I can retrieve a record even when I only remember partial information.
+* As an RA, I can edit a resident's core details, so that the address book stays accurate when contact information changes.
+* As an RA, I can add or clear a private remark for a resident, so that I can keep follow-up notes without changing the resident's main details.
+* As an RA, I can delete resident records that are no longer needed, so that the address book remains organised.
+* As a new RA, I can refer to help and documentation, so that I can learn the command format quickly.
 
 ### Use cases
 
@@ -322,6 +324,36 @@ Finally, the system should support basic usability and flexibility. A new RA sho
     * 3a1. AddressBook shows an error message.
 
       Use case resumes at step 2.
+
+**Use case: Add or clear a resident remark**
+
+**MSS**
+
+1. User requests to list residents or find a resident.
+2. System shows a list of residents with their indices.
+3. User requests to add a remark to a specific resident in the list.
+4. System updates the resident's remark.
+5. System shows the updated resident list.
+
+   Use case ends.
+
+**Extensions**
+
+* 2a. The list is empty.
+
+  Use case ends.
+
+* 3a. The given index is invalid.
+
+    * 3a1. System shows an error message.
+
+      Use case resumes at step 2.
+
+* 3b. The user provides `r/` with no text.
+
+    * 3b1. System clears the resident's existing remark.
+
+      Use case ends.
 
 **Use case: Batch Onboarding**
 
@@ -447,6 +479,7 @@ Finally, the system should support basic usability and flexibility. A new RA sho
 * **Private contact detail**: A contact detail that is not meant to be shared with others
 * **Resident**: A person living in the residential college whose information is stored and managed by the system. Each resident record may include fields such as name, room number, and other optional details.
 * **Resident Assistant (RA)**: The primary user of the application who manages resident information, performs onboarding, and maintains records throughout the semester for a batch of residents living in the residential college.
+* **Remark**: A free-form note stored with a resident record for short contextual information such as follow-ups or special reminders.
 * **User's Preferences (UserPref)**: Settings related to the application environment (e.g., window size or file paths) that are saved locally and loaded when the application starts.
 * **JSON**: JSON (JavaScript Object Notation) is the data format used by the application to store resident information and user preferences on disk.
 * **Index**: The number used by commands (e.g., `delete 1`) to identify a resident from the currently displayed list.
@@ -511,6 +544,21 @@ testers are expected to do more *exploratory* testing.
       Expected: Similar to previous.
 
 1. _{ more test cases …​ }_
+
+### Editing a person's remark
+
+1. Adding or clearing a remark while all persons are being shown
+
+   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+
+   1. Test case: `remark 1 r/Requires wheelchair-accessible venue`<br>
+      Expected: The first person's remark is updated. The success message is shown in the result display. The person card shows the new remark.
+
+   1. Test case: `remark 1 r/`<br>
+      Expected: The first person's remark is removed. The success message is shown in the result display. The remark label is no longer shown on the person card.
+
+   1. Other incorrect remark commands to try: `remark`, `remark 1`, `remark 0 r/test`, `remark x r/test`, `remark 1 r/first r/second`<br>
+      Expected: No person's remark is changed. Error details are shown in the result display.
 
 ### Saving data
 
