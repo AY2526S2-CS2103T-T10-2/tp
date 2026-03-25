@@ -1,0 +1,18 @@
+@startuml
+!include ../style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor MODEL_COLOR
+skinparam classBackgroundColor MODEL_COLOR
+
+Class CommentCommand {
+  -comment: Comment
+  +execute(): CommandResult
+}
+
+Class Command
+Class CommandException
+
+CommentCommand -up-|> Command
+CommentCommand ..> Comment
+CommentCommand .right.> CommandException: throws >
+@enduml
