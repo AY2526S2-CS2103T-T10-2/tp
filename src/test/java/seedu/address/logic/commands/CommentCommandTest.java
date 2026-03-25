@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_COMMENT_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_COMMENT_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_COMMENT_HANNAH;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
@@ -27,15 +28,20 @@ import seedu.address.testutil.PersonBuilder;
  * Contains integration tests (interaction with the Model) and unit tests for CommentCommand.
  */
 public class CommentCommandTest {
+
+    // HANNAH is the 8th person in the typical address book (see TypicalPersons#getTypicalPersons)
+    // and is the only typical person with a non-empty comment.
+    private static final Index INDEX_HANNAH = Index.fromOneBased(8);
+
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
-    public void execute_addCommentUnfilteredList_success() {
+    public void execute_addCommentToPersonWithNoComment_success() {
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person editedPerson = new PersonBuilder(firstPerson).withComment(VALID_COMMENT_AMY).build();
 
         CommentCommand commentCommand = new CommentCommand(INDEX_FIRST_PERSON,
-                new Comment(editedPerson.getComment().value));
+                new Comment(VALID_COMMENT_AMY));
 
         String expectedMessage = String.format(
                 CommentCommand.MESSAGE_ADD_COMMENT_SUCCESS,
@@ -48,15 +54,77 @@ public class CommentCommandTest {
     }
 
     @Test
-    public void execute_deleteCommentUnfilteredList_success() {
+    public void execute_updateCommentToDifferentComment_success() {
+        Person hannah = model.getFilteredPersonList().get(INDEX_HANNAH.getZeroBased());
+        assertTrue(!hannah.getComment().value.isEmpty());
+
+        // Use Amy's comment as the "updated" comment
+        Person editedPerson = new PersonBuilder(hannah).withComment(VALID_COMMENT_AMY).build();
+
+        CommentCommand commentCommand = new CommentCommand(INDEX_HANNAH,
+                new Comment(VALID_COMMENT_AMY));
+
+        String expectedMessage = String.format(
+                CommentCommand.MESSAGE_UPDATE_COMMENT_SUCCESS,
+                Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(hannah, editedPerson);
+
+        assertCommandSuccess(commentCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_updateCommentToSameComment_success() {
+        Person hannah = model.getFilteredPersonList().get(INDEX_HANNAH.getZeroBased());
+        assertTrue(!hannah.getComment().value.isEmpty());
+
+        Person editedPerson = new PersonBuilder(hannah).withComment(VALID_COMMENT_HANNAH).build();
+
+        CommentCommand commentCommand = new CommentCommand(INDEX_HANNAH,
+                new Comment(VALID_COMMENT_HANNAH));
+
+        String expectedMessage = String.format(
+                CommentCommand.MESSAGE_UPDATE_COMMENT_SUCCESS,
+                Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(hannah, editedPerson);
+
+        assertCommandSuccess(commentCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_deleteExistingComment_success() {
+        Person hannah = model.getFilteredPersonList().get(INDEX_HANNAH.getZeroBased());
+        assertTrue(!hannah.getComment().value.isEmpty());
+
+        Person editedPerson = new PersonBuilder(hannah).withComment("").build();
+
+        CommentCommand commentCommand = new CommentCommand(INDEX_HANNAH, new Comment(""));
+
+        String expectedMessage = String.format(
+                CommentCommand.MESSAGE_DELETE_COMMENT_SUCCESS,
+                Messages.format(editedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(hannah, editedPerson);
+
+        assertCommandSuccess(commentCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_deleteEmptyCommentToEmpty_success() {
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        assertTrue(firstPerson.getComment().value.isEmpty());
+
         Person editedPerson = new PersonBuilder(firstPerson).withComment("").build();
 
-        CommentCommand commentCommand = new CommentCommand(INDEX_FIRST_PERSON,
-                new Comment(editedPerson.getComment().toString()));
+        CommentCommand commentCommand = new CommentCommand(INDEX_FIRST_PERSON, new Comment(""));
 
-        String expectedMessage =
-                String.format(CommentCommand.MESSAGE_DELETE_COMMENT_SUCCESS, Messages.format(editedPerson));
+        String expectedMessage = String.format(
+                CommentCommand.MESSAGE_DELETE_COMMENT_SUCCESS,
+                Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(firstPerson, editedPerson);
@@ -65,15 +133,14 @@ public class CommentCommandTest {
     }
 
     @Test
-    public void execute_filteredList_success() {
+    public void execute_addCommentFilteredList_success() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         Person firstPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
-                .withComment(VALID_COMMENT_AMY).build();
+        Person editedPerson = new PersonBuilder(firstPerson).withComment(VALID_COMMENT_AMY).build();
 
         CommentCommand commentCommand = new CommentCommand(INDEX_FIRST_PERSON,
-                new Comment(editedPerson.getComment().value));
+                new Comment(VALID_COMMENT_AMY));
 
         String expectedMessage = String.format(
                 CommentCommand.MESSAGE_ADD_COMMENT_SUCCESS,
