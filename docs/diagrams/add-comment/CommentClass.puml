@@ -1,18 +1,19 @@
 @startuml
-!include ../style.puml
-skinparam arrowThickness 1.1
-skinparam arrowColor MODEL_COLOR
-skinparam classBackgroundColor MODEL_COLOR
+hide circle
+skinparam classAttributeIconSize 0
 
-Class CommentCommand {
-  -comment: Comment
-  +execute(): CommandResult
+Class "{abstract}\nCommand" as Command {
+  +execute(Model): CommandResult
 }
-
-Class Command
+Class CommentCommand {
+  +COMMAND_WORD: String
+  +MESSAGE_USAGE: String
+  +MESSAGE_NOT_IMPLEMENTED_YET: String
+  +execute(Model): CommandResult
+}
 Class CommandException
 
 CommentCommand -up-|> Command
-CommentCommand ..> Comment
+Command ..> CommandException: throws >
 CommentCommand .right.> CommandException: throws >
 @enduml

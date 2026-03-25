@@ -1,17 +1,14 @@
 @startuml
-!include ../style.puml
-skinparam arrowThickness 1.1
-skinparam arrowColor MODEL_COLOR
-skinparam classBackgroundColor MODEL_COLOR
+hide circle
+skinparam classAttributeIconSize 0
 
+Class "<<interface>>\nParser" as Parser
 Class CommentCommandParser {
   +parse(): CommentCommand
 }
-
-Class Parser
 Class ParserException
 
 CommentCommandParser .up.|> Parser
-CommentCommandParser ..> CommentCommand : <<create>>
+Parser .right.> ParserException: throws >
 CommentCommandParser .right.> ParserException: throws >
 @enduml
