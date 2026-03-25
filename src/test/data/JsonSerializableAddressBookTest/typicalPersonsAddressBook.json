@@ -7,7 +7,7 @@
       "email": "alice@example.com",
       "room": "#14-203-D",
       "tags": [
-        "friends"
+        "Halal"
       ]
     },
     {
@@ -16,8 +16,8 @@
       "email": "johnd@example.com",
       "room": "#3-118-A",
       "tags": [
-        "owesMoney",
-        "friends"
+        "Vegetarian",
+        "Allergies"
       ]
     },
     {

@@ -35,9 +35,9 @@ public class Tag {
     /**
      * Returns true if a given string is a valid tag name.
      */
-    public static boolean isValidTagName(String test) {
+    public static boolean isValidTagName(String test) throws NullPointerException {
         if (test == null) {
-            return false;
+            throw new NullPointerException("Tag name cannot be null");
         }
         try {
             TagType.fromString(test);
@@ -59,7 +59,7 @@ public class Tag {
         }
 
         Tag otherTag = (Tag) other;
-        return tagType.equals(otherTag.tagType);
+        return this.tagType == otherTag.tagType;
     }
 
     @Override
