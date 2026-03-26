@@ -21,8 +21,6 @@ import seedu.address.model.person.Person;
  * Changes the comment of an existing person in the address book.
  */
 public class CommentCommand extends Command {
-    private static final Logger logger = LogsCenter.getLogger(CommentCommand.class);
-
     public static final String COMMAND_WORD = "comment";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
@@ -37,9 +35,8 @@ public class CommentCommand extends Command {
     public static final String MESSAGE_ADD_COMMENT_SUCCESS = "Added comment to Person: %1$s";
     public static final String MESSAGE_DELETE_COMMENT_SUCCESS = "Removed comment from Person: %1$s";
     public static final String MESSAGE_UPDATE_COMMENT_SUCCESS = "Updated comment for Person: %1$s";
-
     public static final String MESSAGE_ARGUMENTS = "Index: %1$d, Comment: %2$s";
-
+    private static final Logger logger = LogsCenter.getLogger(CommentCommand.class);
     private final Index index;
     private final Comment comment;
 
@@ -65,8 +62,7 @@ public class CommentCommand extends Command {
         Person personToEdit = lastShownList.get(index.getZeroBased());
         logger.fine("EditComment executed for index: " + index.getZeroBased());
 
-        Person editedPerson = new Person(
-                personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
+        Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                 personToEdit.getRoom(), comment, personToEdit.getTags());
 
         model.setPerson(personToEdit, editedPerson);
@@ -106,8 +102,7 @@ public class CommentCommand extends Command {
         }
 
         CommentCommand e = (CommentCommand) other;
-        return index.equals(e.index)
-                && comment.equals(e.comment);
+        return index.equals(e.index) && comment.equals(e.comment);
     }
 
     @Override
