@@ -2,12 +2,34 @@
 layout: page
 title: User Guide
 ---
+# User Guide
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps. This will eventually be upgraded by our team!
+>  **RACE (Residential Assistant’s Contact Entries)** is a desktop application for managing resident information, optimized for use via a Command Line Interface (CLI) while still providing the benefits of a Graphical User Interface (GUI). It allows Residential Assistants to quickly store, update, and retrieve resident details in a secure, centralised system, replacing fragmented and inefficient workflows. Fast CLI commands enable efficient data entry and management, especially during high-intensity periods like onboarding.
+>
+> **Target Users:** Residential Assistants (RAs)  
+>
+> **Assumptions:** Users have basic computer literacy and are comfortable with typing commands, navigating lists, and interpreting simple system feedback. They can quickly pick up terminal-style interactions and prefer efficient, keyboard-driven workflows for repetitive tasks.
 
-* Table of Contents
-{:toc}
 
+## Table of Contents
+
+* Quick start
+* Features
+  * Viewing help : `help`
+  * Adding a resident : `add`
+  * Listing all residents : `list`
+  * Editing a resident : `edit`
+  * Adding a comment : `comment`
+  * Finding a resident : `find`
+  * Deleting a resident : `delete`
+  * Clearing all entries : `clear`
+  * Exiting the program : `exit`
+  * Saving the data
+  * Editing the data file
+  * Archiving data files 
+* FAQ
+* Known issues
+* Command summary
 --------------------------------------------------------------------------------------------------------------------
 
 ## Quick start
