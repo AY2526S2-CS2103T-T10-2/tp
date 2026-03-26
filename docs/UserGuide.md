@@ -91,10 +91,10 @@ Examples:
 
 Shows a list of all persons in the address book. Optionally, sorts the list by a specific field.
 
-Format: `list [-sort FIELD_PREFIX]`
+Format: `list [-sort PREFIX]`
 
-* Supported field prefixes for `FIELD_PREFIX`: `n/` (name), `r/` (room), `p/` (phone), `e/` (email).
-* If `-sort FIELD_PREFIX` is omitted, the default order is used (chronological by addition).
+* Supported field prefixes for `PREFIX`: `n/` (name), `r/` (room), `p/` (phone), `e/` (email).
+* If `-sort PREFIX` is omitted, the default order is used (chronological by addition).
 
 Examples:
 * `list` Lists all residents.
@@ -230,6 +230,6 @@ Action | Format, Examples
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
 **Edit** | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [r/ROOM] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/e1234567@u.nus.edu`
 **Find** | `find KEYWORD [MORE_KEYWORDS]` or `find ROOM`<br> e.g., `find James Jake`, `find #14-203-D`
-**List** | `list [-sort FIELD_PREFIX]` <br> e.g., `list -sort r/`
+**List** | `list [-sort PREFIX]` <br> e.g., `list -sort r/`
 **Help** | `help`
 **Comment** | `comment INDEX c/COMMENT`<br> e.g., `comment 1 c/Prefers WhatsApp messages before visits`, `comment 3 c/`
