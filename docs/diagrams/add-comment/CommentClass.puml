@@ -20,8 +20,6 @@ Class Comment
 Class Index
 
 CommentCommand -up-|> Command
-Command ..> CommandException: <<throws>>
-CommentCommand .right.> CommandException: <<throws>>
 CommentCommand *-- "1" Comment : has >
 CommentCommand -down-> "1" Index : references >
 @enduml
