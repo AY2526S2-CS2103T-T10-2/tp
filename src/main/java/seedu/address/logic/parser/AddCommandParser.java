@@ -12,11 +12,11 @@ import java.util.stream.Stream;
 
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Comment;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-import seedu.address.model.person.Remark;
 import seedu.address.model.person.Room;
 import seedu.address.model.tag.Tag;
 
@@ -26,6 +26,7 @@ import seedu.address.model.tag.Tag;
 public class AddCommandParser implements Parser<AddCommand> {
     public static final String DEFAULT_PHONE = "";
     public static final String DEFAULT_EMAIL = "";
+    public static final String DEFAULT_COMMENT = "";
 
     /**
      * Returns true if none of the prefixes contains empty {@code Optional} values
@@ -62,10 +63,10 @@ public class AddCommandParser implements Parser<AddCommand> {
         Room room = ParserUtil.parseRoom(argMultimap.getValue(PREFIX_ROOM).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
-        // Adding remark straight away not supported
-        Remark remark = new Remark("");
+        // Adding comment straight away not supported
+        Comment comment = new Comment(DEFAULT_COMMENT);
 
-        Person person = new Person(name, phone, email, room, remark, tagList);
+        Person person = new Person(name, phone, email, room, comment, tagList);
 
         return new AddCommand(person);
     }

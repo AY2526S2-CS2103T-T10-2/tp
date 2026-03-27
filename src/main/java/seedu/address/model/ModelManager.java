@@ -43,7 +43,7 @@ public class ModelManager implements Model {
         this(new AddressBook(), new UserPrefs());
     }
 
-    //=========== UserPrefs ==================================================================================
+    // =========== UserPrefs ==================================================================================
 
     @Override
     public ReadOnlyUserPrefs getUserPrefs() {
@@ -78,7 +78,7 @@ public class ModelManager implements Model {
         userPrefs.setAddressBookFilePath(addressBookFilePath);
     }
 
-    //=========== AddressBook ================================================================================
+    // =========== AddressBook ================================================================================
 
     @Override
     public ReadOnlyAddressBook getAddressBook() {
@@ -99,12 +99,14 @@ public class ModelManager implements Model {
     @Override
     public void deletePerson(Person target) {
         addressBook.removePerson(target);
+        assert !addressBook.hasPerson(target) : "Person should not exist after deletePerson";
     }
 
     @Override
     public void addPerson(Person person) {
         addressBook.addPerson(person);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        assert addressBook.hasPerson(person) : "Person should exist after addPerson";
     }
 
     @Override
@@ -114,7 +116,7 @@ public class ModelManager implements Model {
         addressBook.setPerson(target, editedPerson);
     }
 
-    //=========== Filtered Person List Accessors =============================================================
+    // =========== Filtered Person List Accessors =============================================================
 
     /**
      * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
