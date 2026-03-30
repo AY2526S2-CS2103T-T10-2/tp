@@ -338,8 +338,43 @@ _Details coming soon ..._
 
 ## FAQ
 
-**Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+### Resident details
+
+**Q**: What information can I store for each resident?<br>
+**A**: In RACE, each resident has a name and room, plus optional phone number, email address, tags, and a comment.
+
+**Q**: Is it required to enter the phone number and email for a resident?<br>
+**A**: No. You can omit these when using the `add` command.
+
+**Q**: Can I add a comment while creating a resident?<br>
+**A**: No. Comments cannot be added as part of the `add` command. They must be added later with the `comment` command.
+
+### Rules and limitations
+
+**Q**: Can I add two residents with the same name?<br>
+**A**: No. The app treats residents with the same name as duplicates, even if their other details are different. Try to add extra words to the name unique to each resident, e.g., 
+
+**Q**: Can I delete more than one resident at once?<br>
+**A**: Yes. You can delete multiple residents in one command by providing multiple indices.
+
+### Saving and data
+
+**Q**: Does the app save automatically?<br>
+**A**: Yes. Successful changes are saved automatically.
+
+**Q**: Where is my data stored?<br>
+**A**: Your data is stored in `data/addressbook.json`, in the same folder as the `.jar` file you use to open the app.
+
+**Q**: How do I move my data to another computer, or pass it to another RA taking over?<br>
+**A**: Close the app first. Then find `data/addressbook.json` in the same folder as the `.jar` file you use to open the app. Copy that file into the `data` folder within the same folder as the `.jar` file in the new setup. If the new setup already has its own `addressbook.json`, replace it with your copied file. When you open the app again, your resident list should appear there.
+
+**Q**: What happens the first time I open the app?<br>
+**A**: If no data file exists yet, the app starts with sample residents. These are written to `data/addressbook.json` when you make your first successful change. If the file exists but cannot be loaded properly, the app starts with an empty list, and your next successful change saves a fresh data file.
+
+### Help
+
+**Q**: How do I get help?<br>
+**A**: Use the `help` command or press `F1` to open the help window.
 
 --------------------------------------------------------------------------------------------------------------------
 
