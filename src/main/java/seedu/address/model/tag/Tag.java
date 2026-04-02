@@ -26,8 +26,8 @@ public class Tag {
         String trimmedTagName = tagName.trim();
         checkArgument(isValidTagName(trimmedTagName), MESSAGE_CONSTRAINTS);
 
-        if (DefaultTagType.isDefaultTagName(trimmedTagName)) {
-            this.tagName = DefaultTagType.fromString(trimmedTagName).getDisplayName();
+        if (DefaultTagEnum.isDefaultTagName(trimmedTagName)) {
+            this.tagName = DefaultTagEnum.fromString(trimmedTagName).getDisplayName();
         } else {
             this.tagName = trimmedTagName;
         }
@@ -53,7 +53,7 @@ public class Tag {
      * Returns true if this tag is one of the built-in default tags.
      */
     public boolean isBuiltInTag() {
-        return DefaultTagType.isDefaultTagName(tagName);
+        return DefaultTagEnum.isDefaultTagName(tagName);
     }
 
     @Override
