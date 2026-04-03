@@ -177,12 +177,10 @@ When sorting IS used:
 Supported sort prefixes:
 * `n/` (name)
 * `r/` (room)
-* `p/` (phone)
-* `e/` (email)
 
 Warnings:
 * Invalid command format → `Invalid command format!`
-* Invalid sort prefix (e.g., `list -sort x/`) → `Invalid sort field! Supported field prefixes: n/, r/, p/, e/`
+* Invalid sort prefix (e.g., `list -sort x/`) → `Invalid sort field! Supported field prefixes: n/, r/`
 
 Tips:
 * Use `list -sort PREFIX` to review residents in a predictable order.
