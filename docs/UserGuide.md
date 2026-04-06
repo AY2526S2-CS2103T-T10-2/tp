@@ -281,13 +281,12 @@ Examples:
 
 </box>
 
-### Finding residents by name or room: `find`
+### Finding residents by keyword (name, room, or tag): find
 
-Finds residents by name (matches names containing any keyword) or by exact room.
+Finds residents whose **name**, **room**, or **tags** contain any of the given keywords.
 
 Format:
-* `find KEYWORD [MORE_KEYWORDS]`
-* `find ROOM`
+* `find KEYWORD [MORE_KEYWORDS]...`
 
 Expected Output:
 `X persons listed!`
@@ -295,27 +294,26 @@ Expected Output:
 <box type="info" seamless>
 
 **Note:**
-
-**Name search**
-* Case-insensitive (e.g., `hans` matches `Hans`)
-* Matches full words only (e.g., `Han` does not match `Hans`)
-* Keyword order does not matter (e.g., `find Hans Bo` matches `Bo Hans`)
-* Uses OR logic (e.g., `find Hans Bo` returns `Hans Bo`, `Bo Tan`)
-
-**Room search**
-* Must match exact format `#BLOCK-ROOM-LETTER` (e.g., `#14-203-D`)
-* Matches must be exact (e.g., `#05-203-D` ≠ `#5-203-D`)
+* Search is case-insensitive.
+* Partial matching is supported.
+  * e.g., `Han` matches `Hans`
+  * e.g., `#14-2` matches `#14-203-D`
+  * e.g., `allerg` matches tag `allergies`
+* `find` checks resident **name**, **room**, and **tags**.
+* If multiple keywords are provided, OR logic is used (a resident is returned if any keyword matches).
 
 </box>
 
 Examples:
 **Input → Expected Output**
-* `find John`  
-  → Shows residents named `john`, `John Doe`
-* `find alex david`  
-  → Shows residents `Alex Yeoh`, `David Li`
-* `find #14-203-D`  
-  → Shows residents in that room  
+* `find alex`  
+  → Shows residents whose names contain `alex`
+* `find #14-2`  
+  → Shows residents in rooms containing `#14-2`
+* `find allerg`  
+  → Shows residents with tags containing `allerg` (e.g., `allergies`)
+* `find alex #14-2 halal`  
+  → Shows residents matching any of these keywords in name, room, or tags  
 
 <box type="warning" seamless>
 
@@ -328,9 +326,6 @@ Examples:
 
 **Tips:**
 * Use multiple keywords to quickly find groups (e.g., `find Alex Bob David Hannah`).
-* Combine with other commands for efficiency:
-  * `find Alex` → `delete 1`
-  * `find Alex` → `edit 1 r/#14-205`
 
 </box>
 
@@ -547,7 +542,7 @@ _Details coming soon ..._
  **Clear**   | `clear`                                                                                                                                              
  **Delete**  | `delete INDEX`<br> e.g., `delete 3`                                                                                                                  
  **Edit**    | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [r/ROOM] [t/TAG]…​ [-newtag]`<br> e.g.,`edit 2 n/James Lee t/project-team -newtag`                            
- **Find**    | `find KEYWORD [MORE_KEYWORDS]` or `find ROOM`<br> e.g., `find James Jake`, `find #14-203-D`                                                          
+ **Find**    | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`, `find #14-203-D`, `find alex #14-2 allerg`                                                          
  **List**    | `list [-sort PREFIX]` <br> e.g., `list -sort r/`                                                                                                            
  **Help**    | `help`                                                                                                                                               
  **Comment** | `comment INDEX c/[COMMENT]`<br> e.g., `comment 1 c/Prefers WhatsApp messages before visits`, `comment 3 c/`                                            
