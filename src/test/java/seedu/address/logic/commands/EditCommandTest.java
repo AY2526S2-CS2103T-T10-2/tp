@@ -14,9 +14,9 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import java.util.Comparator;
-
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+
+import java.util.Comparator;
 
 import org.junit.jupiter.api.Test;
 
@@ -105,7 +105,7 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_sortedList_retainsSortContext_success() throws Exception {
+    public void execute_sortedListRetainsContext_success() throws Exception {
         model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS, ROOM_COMPARATOR);
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON,
                 new EditPersonDescriptorBuilder().withPhone("95551234").build());
