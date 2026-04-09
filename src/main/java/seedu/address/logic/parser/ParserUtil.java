@@ -5,7 +5,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 
 import seedu.address.commons.core.index.Index;
@@ -129,20 +129,40 @@ public class ParserUtil {
 
     /**
      * Parses a flag prefix that must not have an associated value.
+     * If the flag is present multiple times, it is treated as a single flag.
+     * If the flag is present but followed by a non-empty value, the error uses the generic invalid command format.
      */
     public static boolean parseBooleanFlag(ArgumentMultimap argMultimap, Prefix prefix, String usageMessage)
             throws ParseException {
+        requireNonNull(usageMessage);
+        return parseBooleanFlagWithTrailingValueMessage(argMultimap, prefix,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, usageMessage));
+    }
+
+    /**
+     * Parses a flag prefix that must not have an associated value.
+     *
+     * @param messageWhenFlagHasTrailingValue full message when {@code prefix} is present but followed by a non-empty
+     *        value
+     */
+    public static boolean parseBooleanFlagWithTrailingValueMessage(ArgumentMultimap argMultimap, Prefix prefix,
+            String messageWhenFlagHasTrailingValue) throws ParseException {
         requireNonNull(argMultimap);
         requireNonNull(prefix);
-        requireNonNull(usageMessage);
+        requireNonNull(messageWhenFlagHasTrailingValue);
 
-        Optional<String> flagValue = argMultimap.getValue(prefix);
-        if (flagValue.isEmpty()) {
+        // Get all instances of boolean flag
+        List<String> flagValues = argMultimap.getAllValues(prefix);
+        if (flagValues.isEmpty()) {
+            // No flag provided, value is `false`
             return false;
         }
 
-        if (!flagValue.get().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, usageMessage));
+        // Check each instance of boolean flag - must not have an associated value.
+        for (String flagValue : flagValues) {
+            if (!flagValue.isEmpty()) {
+                throw new ParseException(messageWhenFlagHasTrailingValue);
+            }
         }
 
         return true;

@@ -16,6 +16,8 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.util.Comparator;
+
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
@@ -34,6 +36,7 @@ import seedu.address.testutil.PersonBuilder;
  */
 public class EditCommandTest {
 
+    private static final Comparator<Person> ROOM_COMPARATOR = (p1, p2) -> p1.getRoom().compareTo(p2.getRoom());
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
@@ -88,16 +91,31 @@ public class EditCommandTest {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
 
         Person personInFilteredList = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
-        Person editedPerson = new PersonBuilder(personInFilteredList).withName(VALID_NAME_BOB).build();
+        Person editedPerson = new PersonBuilder(personInFilteredList).withPhone(VALID_PHONE_BOB).build();
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON,
-                new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB).build());
+                new EditPersonDescriptorBuilder().withPhone(VALID_PHONE_BOB).build());
 
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(editedPerson));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
+        showPersonAtIndex(expectedModel, INDEX_FIRST_PERSON);
 
         assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_sortedListRetainsContext_success() throws Exception {
+        model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS, ROOM_COMPARATOR);
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON,
+                new EditPersonDescriptorBuilder().withPhone("95551234").build());
+        editCommand.execute(model);
+
+        for (int i = 1; i < model.getFilteredPersonList().size(); i++) {
+            Person previous = model.getFilteredPersonList().get(i - 1);
+            Person current = model.getFilteredPersonList().get(i);
+            assertTrue(previous.getRoom().compareTo(current.getRoom()) <= 0);
+        }
     }
 
     @Test
@@ -106,7 +124,7 @@ public class EditCommandTest {
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(firstPerson).build();
         EditCommand editCommand = new EditCommand(INDEX_SECOND_PERSON, descriptor);
 
-        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_NAME);
     }
 
     @Test
@@ -118,7 +136,55 @@ public class EditCommandTest {
         EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON,
                 new EditPersonDescriptorBuilder(personInList).build());
 
-        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_PERSON);
+        assertCommandFailure(editCommand, model, EditCommand.MESSAGE_DUPLICATE_NAME);
+    }
+
+    @Test
+    public void execute_duplicatePhoneUnfilteredList_failure() {
+        Model customModel = new ModelManager(new AddressBook(), new UserPrefs());
+        Person firstPerson = new PersonBuilder().withName("Alpha").withPhone("90000011")
+                .withEmail("alpha@example.com").withRoom("#1-111-A").build();
+        Person secondPerson = new PersonBuilder().withName("Bravo").withPhone("90000022")
+                .withEmail("bravo@example.com").withRoom("#2-222-B").build();
+        customModel.addPerson(firstPerson);
+        customModel.addPerson(secondPerson);
+
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON,
+                new EditPersonDescriptorBuilder().withPhone("90000022").build());
+
+        assertCommandFailure(editCommand, customModel, EditCommand.MESSAGE_DUPLICATE_PHONE);
+    }
+
+    @Test
+    public void execute_duplicateEmailUnfilteredList_failure() {
+        Model customModel = new ModelManager(new AddressBook(), new UserPrefs());
+        Person firstPerson = new PersonBuilder().withName("Charlie").withPhone("90000033")
+                .withEmail("charlie@example.com").withRoom("#3-333-C").build();
+        Person secondPerson = new PersonBuilder().withName("Delta").withPhone("90000044")
+                .withEmail("delta@example.com").withRoom("#4-444-D").build();
+        customModel.addPerson(firstPerson);
+        customModel.addPerson(secondPerson);
+
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON,
+                new EditPersonDescriptorBuilder().withEmail("delta@example.com").build());
+
+        assertCommandFailure(editCommand, customModel, EditCommand.MESSAGE_DUPLICATE_EMAIL);
+    }
+
+    @Test
+    public void execute_duplicateRoomUnfilteredList_failure() {
+        Model customModel = new ModelManager(new AddressBook(), new UserPrefs());
+        Person firstPerson = new PersonBuilder().withName("Echo").withPhone("90000055")
+                .withEmail("echo@example.com").withRoom("#5-555-E").build();
+        Person secondPerson = new PersonBuilder().withName("Foxtrot").withPhone("90000066")
+                .withEmail("foxtrot@example.com").withRoom("#6-666-F").build();
+        customModel.addPerson(firstPerson);
+        customModel.addPerson(secondPerson);
+
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON,
+                new EditPersonDescriptorBuilder().withRoom("#6-666-F").build());
+
+        assertCommandFailure(editCommand, customModel, EditCommand.MESSAGE_DUPLICATE_ROOM);
     }
 
     @Test
