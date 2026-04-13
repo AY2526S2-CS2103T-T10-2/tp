@@ -153,7 +153,8 @@ The `Storage` component,
 * can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
 * persists each person's comment in the JSON data file and loads missing `comment` fields as empty comments to preserve compatibility with older saved data.
 * persists the custom tag registry separately as `customTags`, while also rebuilding missing custom-tag entries from loaded persons so the in-memory model stays usable even if the file is stale.
-* inherits from both `AddressBookStorage` and `UserPrefsStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
+* surfaces address-book load outcomes to the UI so the result display can show whether saved data, sample data, or an empty address book was loaded on startup.
+* inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
 * depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
 
 ### Common classes
@@ -517,8 +518,6 @@ testers are expected to do more *exploratory* testing.
    1. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
-
 ### Sorting residents
 
 1. Sorting residents by different fields
@@ -545,8 +544,6 @@ testers are expected to do more *exploratory* testing.
 
    1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
-
-1. _{ more test cases …​ }_
 
 ### Editing a person's comment
 
