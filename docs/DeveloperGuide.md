@@ -565,31 +565,31 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: App has been launched at least once in a test folder.
 
    1. Test case: `add n/Test Resident r/#09-101` and then close the app.<br>
-       Re-launch the app.<br>
-       Expected: The newly added resident is still present in the list. The file `data/addressbook.json` exists in the app folder and contains the new resident record.
+      Re-launch the app.<br>
+      Expected: The newly added resident is still present in the list. The file `data/addressbook.json` exists in the app folder and contains the new resident record.
 
    1. Test case: `add n/Another Resident r/#09-102`, then enter an invalid command such as `delete 999999`.<br>
-       Expected: The invalid command shows an error message and does not modify saved data. After closing and re-launching the app, `Another Resident` is still present and no unintended changes have been made.
+      Expected: The invalid command shows an error message and does not modify saved data. After closing and re-launching the app, `Another Resident` is still present and no unintended changes have been made.
 
 1. Dealing with a missing data file
 
    1. Prerequisites: Close the app. In the app folder, ensure `data/addressbook.json` does not exist by deleting it or moving it elsewhere.
 
    1. Test case: Launch the app in that folder.<br>
-       Expected: The app starts successfully and shows the sample residents in the GUI.
+      Expected: The app starts successfully and shows the sample residents in the GUI.
 
    1. Test case: After launch, execute a successful command such as `list` or `add n/Test Resident r/#10-101`.<br>
-       Expected: A new `data/addressbook.json` file is created in the app folder.
+      Expected: A new `data/addressbook.json` file is created in the app folder.
 
 1. Dealing with a corrupted data file
 
    1. Prerequisites: Close the app. Open `data/addressbook.json` in a text editor and replace its contents with invalid JSON such as `{ invalid json`.
 
    1. Test case: Launch the app.<br>
-       Expected: The app starts successfully with an empty resident list instead of crashing, because invalid stored data cannot be loaded.
+      Expected: The app starts successfully with an empty resident list instead of crashing, because invalid stored data cannot be loaded.
 
    1. Test case: Execute a successful command such as `add n/Recovered Resident r/#11-111`.<br>
-       Expected: The app saves normally again, and `data/addressbook.json` is replaced with a valid file containing the new resident data.
+      Expected: The app saves normally again, and `data/addressbook.json` is replaced with a valid file containing the new resident data.
 
  --------------------------------------------------------------------------------------------------------------------
 
