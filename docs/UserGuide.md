@@ -212,9 +212,7 @@ Examples:
 
 Shows all residents in the address book. You can optionally sort the displayed list by name or room.
 
-Format:
-`list`
-`list -sort PREFIX`
+Format: `list` or `list -sort PREFIX`
 
 Expected Output:
 When sorting is NOT used:
