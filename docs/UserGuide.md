@@ -151,6 +151,7 @@ Format: `add n/NAME [p/PHONE] [e/EMAIL] r/ROOM [t/TAG]…​ [-newtag]`
 * Duplicate checks apply to `name`, `room`, `phone`, and `email`.
 * Room uniqueness is intentional for this app's model (one resident per room in this Residential College (RC) context).
 * `phone` and `email` are optional, but if provided, they must still be unique among residents.
+* If you previously ran `list -sort ...`, adding a resident preserves that active sort order in the displayed list.
 
 </box>
 
