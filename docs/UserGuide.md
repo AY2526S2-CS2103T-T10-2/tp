@@ -325,7 +325,8 @@ Expected Output:
   * e.g., `Han` matches `Hans`
   * e.g., `#14-2` matches `#14-203-D`
   * e.g., `allerg` matches tag `allergies`
-* `find` checks resident **name**, **room**, and **tags**.
+* `find` checks resident **name**, **room**, and **tags** only.
+* `find` does **not** search the `comment` field.
 * If multiple keywords are provided, OR logic is used (a resident is returned if any keyword matches).
 
 </box>
