@@ -43,7 +43,7 @@ public class MainAppTest {
 
         assertEquals("Persons list contains duplicate person(s). Starting with an empty address book from "
                         + "data/addressbook.json.",
-                MainApp.getStartupMessage(ADDRESS_BOOK_FILE, exception));
+                MainApp.getStartingEmptyMessage(ADDRESS_BOOK_FILE, exception));
     }
 
 }

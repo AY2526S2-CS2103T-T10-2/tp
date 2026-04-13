@@ -3,8 +3,8 @@ package seedu.address;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -22,8 +22,8 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.util.SampleDataUtil;
 import seedu.address.model.tag.Tag;
+import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.AddressBookStorage;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
@@ -86,7 +86,7 @@ public class MainApp extends Application {
                 logger.info("Creating a new data file " + storage.getAddressBookFilePath()
                         + " populated with a sample AddressBook.");
                 startupMessage = getLoadedSampleDataMessage();
-            } else { 
+            } else {
                 startupMessage = getLoadedSavedDataMessage(storage.getAddressBookFilePath(), addressBookOptional.get());
             }
             initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
